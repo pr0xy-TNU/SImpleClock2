@@ -63,30 +63,46 @@ public class ClockWidget extends AppWidgetProvider {
 
     bitmap = Bitmap.createBitmap(DISPLAY_WIDTH, DISPLAY_HEIGHT, Config.ARGB_8888);
     dial_Canvas = new Canvas(bitmap);
-    onTimeChanged();
 
-    //appWidgetManager.updateAppWidget(appWidgetId, views);
+    onTimeChanged();
+    appWidgetManager.updateAppWidget(appWidgetId, views);
   }
+/*
+  @Override
+  public void onReceive(Context context, Intent intent) {
+    super.onReceive(context, intent);
+    if (AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(intent)) {
+      AppWidgetManager amgr = AppWidgetManager.getInstance(context);
+      int length = amgr.getAppWidgetIds(intent.getComponent()).length;
+      if (length == 0)// WidgetService.StopService(context);
+      {
+        context.stopService(new Intent(context, ClockWidget.class));
+      }
+      isWidgetCreated = false;
+    }
+  }*/
 
   public static void onDraw() {
     boolean changed = mChanged;
-    if (!mChanged) {
-      changed = false;
+    if (changed) {
+      mChanged = false;
     }
+
     Log.d(LOG_TAG, "onDraw");
+    Log.d(LOG_TAG, DISPLAY_HEIGHT + " " + DISPLAY_WIDTH);
+
     int availableHeight = DISPLAY_HEIGHT;
     int availableWidth = DISPLAY_WIDTH;
 
     int x = availableHeight / 2;
     int y = availableWidth / 2;
 
+    final Drawable dial = mainDial;
     int w = mainDial.getIntrinsicWidth();
     int h = mainDial.getIntrinsicHeight();
 
     boolean scaled = false;
 
-    //рисуем табло
-    final Drawable dial = mainDial;
     if (availableWidth < w || availableHeight < h) {
       scaled = true;
       float scale = Math.min((float) availableWidth / (float) w,
@@ -103,7 +119,7 @@ public class ClockWidget extends AppWidgetProvider {
     dial_Canvas.save();
     // Рисуем компонентый
     //Рисуем часовую трелку
-    dial_Canvas.rotate(mHours / 4 * 360, x, y);
+    dial_Canvas.rotate(mHours / 4.0f * 360, x, y);
     final Drawable hourHand = mHourHand;
     if (changed) {
       w = hourHand.getIntrinsicWidth();
@@ -124,8 +140,7 @@ public class ClockWidget extends AppWidgetProvider {
     }
     minutesHand.draw(dial_Canvas);
 
-    if (hasSecondHand) {
-
+    /*if (hasSecondHand) {
       dial_Canvas.save();
       dial_Canvas.rotate(mSeconds / 108 * 100 * 360, x, y);
       final Drawable secondHand = mSecondHand;
@@ -135,7 +150,7 @@ public class ClockWidget extends AppWidgetProvider {
         secondHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y + (h / 2));
       }
       minutesHand.draw(dial_Canvas);
-    }
+    }*/
     dial_Canvas.restore();
 
     if (scaled) {
@@ -158,6 +173,7 @@ public class ClockWidget extends AppWidgetProvider {
     mMinutes = minute * 1.8f + mSeconds / 100.0f;
     //Плавный ход чаовой стрелки
     mHours = hour / 6.0f + mMinutes;
+    mChanged = true;
     bitmap.eraseColor(Color.TRANSPARENT);
     onDraw();
 

@@ -40,7 +40,7 @@ public class ClockService extends Service {
 
     ClockWidget.onDraw();
 
-    getBaseContext().registerReceiver(mIntentReceiver, filter, null, mHandler);
+    getBaseContext().registerReceiver(mIntentReceiver, filter);
     return START_STICKY;
   }
 
@@ -62,7 +62,7 @@ public class ClockService extends Service {
         ClockWidget.mCalendar = new Time(TimeZone.getTimeZone(tz).getID());
       }
       //ClockWidget.onTimeChanged();
-      // ClockWidget.broadcastTimeChanging();
+      ClockWidget.broadcastTimeChanging();
 
       AppWidgetManager appWidgetManager = AppWidgetManager
           .getInstance(context);

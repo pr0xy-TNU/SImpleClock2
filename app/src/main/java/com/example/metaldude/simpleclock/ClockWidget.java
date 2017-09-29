@@ -55,8 +55,9 @@ public class ClockWidget extends AppWidgetProvider {
     //init resources
 
     mainDial = context.getResources().getDrawable(R.drawable.dial_220);
-    mHourHand = context.getResources().getDrawable(R.drawable.minutes_hand);
-    mMinuteHand = context.getResources().getDrawable(R.drawable.hours_hand);
+    mHourHand = context.getResources().getDrawable(R.drawable.hours_hand);
+    mMinuteHand = context.getResources().getDrawable(R.drawable.minutes_hand);
+
     mSecondHand = context.getResources().getDrawable(R.drawable.minutes_hand);
     DISPLAY_HEIGHT = mainDial.getIntrinsicHeight();
     DISPLAY_WIDTH = mainDial.getIntrinsicWidth();

@@ -4,6 +4,6 @@
   android:minWidth="@dimen/widget_window_size"
   android:previewImage="@drawable/preload_icon"
   android:resizeMode="horizontal|vertical"
-  android:updatePeriodMillis="0">
+  android:updatePeriodMillis="240000000">
 
 </appwidget-provider>

@@ -159,8 +159,8 @@ public class ClockWidget extends AppWidgetProvider {
     dial_Canvas.rotate(mMinutes / 108.0f * 360.0f, x, y);
     final Drawable minuteHand = mMinuteHand;
     if (changed) {
-      w = secondHand.getIntrinsicWidth();
-      h = secondHand.getIntrinsicHeight();
+      w = minuteHand.getIntrinsicWidth();
+      h = minuteHand.getIntrinsicHeight();
       minuteHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y + (h / 2));
     }
     minuteHand.draw(dial_Canvas);

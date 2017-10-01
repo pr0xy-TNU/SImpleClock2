@@ -186,7 +186,7 @@ public class ClockWidget extends AppWidgetProvider {
   public static void onTimeChanged() {
     Log.d(LOG_TAG, "oTimeChanged");
     Log.d(LOG_TAG, "Time is " + hourCounter + " : " + minuteCounter + " : " + secondCounter + ". ");
-    mCalendar.setToNow();
+    //mCalendar.setToNow();
     //Time logic
     secondCounter++;
     if (secondCounter == 100) {
@@ -202,12 +202,11 @@ public class ClockWidget extends AppWidgetProvider {
     //int second = mCalendar.second;
 
     mSeconds = secondCounter;
-    Log.d(LOG_TAG, String.valueOf(secondCounter));
     //Плавный ход винутной стрелки
     // * 0.6
-    mMinutes = minute * 1.8f + mSeconds / 100.0f;
+    mMinutes = minuteCounter + secondCounter / 100.0f;
     //Плавный ход чаовой стрелки
-    mHours = hour / 6.0f + mMinutes / 108.0f;
+    mHours = hourCounter + minuteCounter / 108.0f;
     mChanged = true;
     bitmap.eraseColor(Color.TRANSPARENT);
     onDraw();

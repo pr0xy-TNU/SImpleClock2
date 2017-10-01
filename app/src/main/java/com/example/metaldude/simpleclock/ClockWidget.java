@@ -55,6 +55,12 @@ public class ClockWidget extends AppWidgetProvider {
   static int[] appWidgetIds = null;
 
   @Override
+  public void onDeleted(Context context, int[] appWidgetIds) {
+    super.onDeleted(context, appWidgetIds);
+    Log.d(LOG_TAG, "THe widget was deleted");
+  }
+
+  @Override
   public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
     super.onUpdate(context, appWidgetManager, appWidgetIds);
     Log.d(LOG_TAG, "onUpdate");
@@ -73,11 +79,11 @@ public class ClockWidget extends AppWidgetProvider {
     views = new RemoteViews(context.getPackageName(), R.layout.clock_widget_layout);
     //init resources
 
-    mainDial = context.getResources().getDrawable(R.drawable.dial_220);
-    mHourHand = context.getResources().getDrawable(R.drawable.hours_hand);
-    mMinuteHand = context.getResources().getDrawable(R.drawable.minutes_hand);
+    mainDial = context.getResources().getDrawable(R.drawable.new_dial);
+    mHourHand = context.getResources().getDrawable(R.drawable.hour_hand_new);
+    mMinuteHand = context.getResources().getDrawable(R.drawable.minute_hand_new);
 
-    mSecondHand = context.getResources().getDrawable(R.drawable.second_hand);
+    mSecondHand = context.getResources().getDrawable(R.drawable.second_hand_new);
     DISPLAY_HEIGHT = mainDial.getIntrinsicHeight();
     DISPLAY_WIDTH = mainDial.getIntrinsicWidth();
 
@@ -174,13 +180,13 @@ public class ClockWidget extends AppWidgetProvider {
     mCalendar.setToNow();
     secondCounter = mCalendar.second;
     minuteCounter = mCalendar.minute * 0.6f;
-    int startTimeValue = 0;
+    int startHourValue = 0;
     if (mCalendar.hour > 12) {
-      startTimeValue = mCalendar.hour - 12;
+      startHourValue = mCalendar.hour - 12;
     } else {
-      startTimeValue = mCalendar.hour;
+      startHourValue = mCalendar.hour;
     }
-    hourCounter = startTimeValue / 3.0f;
+    hourCounter = startHourValue / 3.0f;
   }
 
   public static void onTimeChanged() {
@@ -197,32 +203,15 @@ public class ClockWidget extends AppWidgetProvider {
       minuteCounter = 0;
       hourCounter++;
     }
-    int hour = mCalendar.hour;
-    int minute = mCalendar.minute;
-    //int second = mCalendar.second;
 
     mSeconds = secondCounter;
-    //Плавный ход винутной стрелки
-    // * 0.6
     mMinutes = minuteCounter + secondCounter / 100.0f;
-    //Плавный ход чаовой стрелки
     mHours = hourCounter + minuteCounter / 108.0f;
+
     mChanged = true;
     bitmap.eraseColor(Color.TRANSPARENT);
     onDraw();
     views.setImageViewBitmap(R.id.ivClockScreen, bitmap);
   }
 
-  protected static void broadcastTimeChanging() {
-    mCalendar.setToNow();
-
-    int hour = mCalendar.hour;
-    int minute = mCalendar.minute;
-    int second = mCalendar.second;
-
-    mSeconds = second + 40;
-    mMinutes = minute * 1.8f + mSeconds / 100.0f;
-    mHours = hour / 6.0f + mMinutes / 100.0f * 108.0f;
-    mChanged = true;
-  }
 }

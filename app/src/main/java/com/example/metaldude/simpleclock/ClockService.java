@@ -27,8 +27,6 @@ public class ClockService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(LOG_TAG, "onStartCommand");
-        //    ClockWidget.onDraw();
-        //    getBaseContext().registerReceiver(mIntentReceiver, filter);
         mHandler.postDelayed(updateTimeRun, 1000);
         return START_STICKY;
     }
@@ -53,24 +51,4 @@ public class ClockService extends Service {
         }
     };
 
-   /* //Синхронизация с системным времененем
-    private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(LOG_TAG, "onReceive in BroadcastReceiver");
-            if (intent.getAction().equals(Intent.ACTION_TIME_CHANGED)) {
-                String tz = intent.getStringExtra("time-zone");
-                ClockWidget.mCalendar = new Time(TimeZone.getTimeZone(tz).getID());
-            }
-            //ClockWidget.onTimeChanged();
-            ClockWidget.broadcastTimeChanging();
-
-            AppWidgetManager appWidgetManager = AppWidgetManager
-                    .getInstance(context);
-            ClockWidget.updateAppWidget(context,
-                    appWidgetManager, AppWidgetManager.INVALID_APPWIDGET_ID);
-        }
-
-    };*/
 }

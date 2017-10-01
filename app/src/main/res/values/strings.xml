@@ -1,3 +1,8 @@
 <resources>
-  <string name="app_name">SImpleClock</string>
+  <string name="app_name">Runic watches</string>
+  <string name="app_desc">Hello! </string>
+  <string name="min_hand_desc">Минутная стрелка. В 1 минуте 100 секунд.</string>
+  <string name="sec_hand_desc">Секундная стрека.</string>
+  <string name="hour_hand_desc">Часовая стрелка. В 1 часе - 108 минут</string>
+  <string name="clock_desc">РУНИЧЕСКИЕ ЧАСЫ "СОТОВОГО ВРЕМЕНИ"</string>
 </resources>

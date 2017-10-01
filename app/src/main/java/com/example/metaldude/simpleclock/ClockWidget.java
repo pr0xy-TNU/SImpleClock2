@@ -22,6 +22,7 @@ public class ClockWidget extends AppWidgetProvider {
   public static Time mCalendar;
   private static RemoteViews views;
   private static Canvas dial_Canvas;
+
   private static int secondCounter = 0;
   private static float minuteCounter = 0;
   private static float hourCounter = 0;
@@ -37,7 +38,6 @@ public class ClockWidget extends AppWidgetProvider {
   private static float mHours;
   private static float mSeconds;
   public static boolean mChanged = false;
-  public static boolean hasSecondHand = false;
 
   @Override
   public void onEnabled(Context context) {
@@ -79,11 +79,11 @@ public class ClockWidget extends AppWidgetProvider {
     views = new RemoteViews(context.getPackageName(), R.layout.clock_widget_layout);
     //init resources
 
-    mainDial = context.getResources().getDrawable(R.drawable.new_dial);
-    mHourHand = context.getResources().getDrawable(R.drawable.hour_hand_new);
-    mMinuteHand = context.getResources().getDrawable(R.drawable.minute_hand_new);
+    mainDial = context.getResources().getDrawable(R.drawable.dial_294);
+    mHourHand = context.getResources().getDrawable(R.drawable.hour_hand_294);
+    mMinuteHand = context.getResources().getDrawable(R.drawable.minute_hand_294);
 
-    mSecondHand = context.getResources().getDrawable(R.drawable.second_hand_new);
+    mSecondHand = context.getResources().getDrawable(R.drawable.secod_hand_294);
     DISPLAY_HEIGHT = mainDial.getIntrinsicHeight();
     DISPLAY_WIDTH = mainDial.getIntrinsicWidth();
 
@@ -131,10 +131,8 @@ public class ClockWidget extends AppWidgetProvider {
     }
     dial.draw(dial_Canvas);
     dial_Canvas.save();
-    // Рисуем компонентый
-    //Рисуем часовую трелку
+
     dial_Canvas.rotate(mHours / 4.0f * 360, x, y);
-    //dial_Canvas.rotate(mHours / 12.0f * 360.0f, x, y);
     final Drawable hourHand = mHourHand;
     if (changed) {
       w = hourHand.getIntrinsicWidth();
@@ -146,20 +144,8 @@ public class ClockWidget extends AppWidgetProvider {
     dial_Canvas.restore();
     dial_Canvas.save();
 
-    dial_Canvas.rotate(mMinutes / 108 * 360, x, y);
-    //dial_Canvas.rotate(mMinutes / 60.0f * 360.0f, x, y);
-    final Drawable minutesHand = mMinuteHand;
-    if (changed) {
-      w = minutesHand.getIntrinsicWidth();
-      h = minutesHand.getIntrinsicHeight();
-      minutesHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y + (h / 2));
-    }
-    minutesHand.draw(dial_Canvas);
-    dial_Canvas.restore();
-    dial_Canvas.save();
+    dial_Canvas.rotate(mSeconds / 100 * 360, x, y);
 
-    //dial_Canvas.rotate(mSeconds / 108 * 100 * 360, x, y);
-    dial_Canvas.rotate(mSeconds / 100.0f * 360.0f, x, y);
     final Drawable secondHand = mSecondHand;
     if (changed) {
       w = secondHand.getIntrinsicWidth();
@@ -167,6 +153,17 @@ public class ClockWidget extends AppWidgetProvider {
       secondHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y + (h / 2));
     }
     secondHand.draw(dial_Canvas);
+    dial_Canvas.restore();
+    dial_Canvas.save();
+
+    dial_Canvas.rotate(mMinutes / 108.0f * 360.0f, x, y);
+    final Drawable minuteHand = mMinuteHand;
+    if (changed) {
+      w = secondHand.getIntrinsicWidth();
+      h = secondHand.getIntrinsicHeight();
+      minuteHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y + (h / 2));
+    }
+    minuteHand.draw(dial_Canvas);
     dial_Canvas.restore();
 
     if (scaled) {
@@ -192,7 +189,6 @@ public class ClockWidget extends AppWidgetProvider {
   public static void onTimeChanged() {
     Log.d(LOG_TAG, "oTimeChanged");
     Log.d(LOG_TAG, "Time is " + hourCounter + " : " + minuteCounter + " : " + secondCounter + ". ");
-    //mCalendar.setToNow();
     //Time logic
     secondCounter++;
     if (secondCounter == 100) {
@@ -203,11 +199,9 @@ public class ClockWidget extends AppWidgetProvider {
       minuteCounter = 0;
       hourCounter++;
     }
-
     mSeconds = secondCounter;
-    mMinutes = minuteCounter + secondCounter / 100.0f;
-    mHours = hourCounter + minuteCounter / 108.0f;
-
+    mMinutes = minuteCounter + mSeconds / 100.0f;
+    mHours = hourCounter + mMinutes / 108.0f;
     mChanged = true;
     bitmap.eraseColor(Color.TRANSPARENT);
     onDraw();

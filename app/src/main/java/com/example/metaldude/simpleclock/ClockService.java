@@ -16,7 +16,6 @@ import android.util.Log;
 public class ClockService extends Service {
 
     private final Handler mHandler = new Handler();
-    private static final String LOG_TAG = "ClockService";
 
     @Nullable
     @Override
@@ -26,7 +25,7 @@ public class ClockService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(LOG_TAG, "onStartCommand");
+        Log.d(ClockWidget.LOG_TAG, "onStartCommand");
         mHandler.postDelayed(updateTimeRun, 1000);
         return START_STICKY;
     }
@@ -35,14 +34,14 @@ public class ClockService extends Service {
     public void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacks(updateTimeRun);
-        Log.d(LOG_TAG, "onDestroy in service");
+        Log.d(ClockWidget.LOG_TAG, "onDestroy in service");
         stopSelf();
     }
 
     private Runnable updateTimeRun = new Runnable() {
         @Override
         public void run() {
-            Log.d(LOG_TAG, "updateTimeRun");
+            Log.d(ClockWidget.LOG_TAG, "updateTimeRun");
             AppWidgetManager appWidgetManager = AppWidgetManager
                     .getInstance(getApplicationContext());
             ClockWidget.updateAppWidget(getApplicationContext(),

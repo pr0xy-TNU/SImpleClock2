@@ -1,11 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:orientation="vertical"
   tools:context="com.example.metaldude.simpleclock.Main">
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:text="@string/clock_desc" />
 
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="404dp"
+    android:orientation="vertical"
+    android:weightSum="1">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="88dp">
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="124dp"
+        android:layout_weight="0.44"
+        android:src="@drawable/hour_hand_294" />
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="50dp"
+        android:text="@string/hour_hand_desc" />
+    </LinearLayout>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="114dp"
+      android:orientation="horizontal">
+      <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="49dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/secod_hand_294" />
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="50dp"
+        android:text="@string/sec_hand_desc" />
+    </LinearLayout>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="118dp"
+      android:layout_weight="0.54">
+      <ImageView
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/hour_hand_294" />
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="50dp"
+        android:text="@string/min_hand_desc" />
+    </LinearLayout>
 
+  </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

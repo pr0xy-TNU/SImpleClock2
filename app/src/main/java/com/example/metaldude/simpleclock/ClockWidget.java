@@ -199,6 +199,9 @@ public class ClockWidget extends AppWidgetProvider {
       minuteCounter = 0;
       hourCounter++;
     }
+    if (hourCounter == 4) {
+      hourCounter = 0;
+    }
     mSeconds = secondCounter;
     mMinutes = minuteCounter + mSeconds / 100.0f;
     mHours = hourCounter + mMinutes / 108.0f;

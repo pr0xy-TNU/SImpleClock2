@@ -22,6 +22,7 @@ public class ClockWidget extends AppWidgetProvider {
   public static Time mCalendar;
   private static RemoteViews views;
   private static Canvas dial_Canvas;
+  private static int timeLeft = 0;
 
   private static int secondCounter = 0;
   private static float minuteCounter = 0;
@@ -79,7 +80,7 @@ public class ClockWidget extends AppWidgetProvider {
     views = new RemoteViews(context.getPackageName(), R.layout.clock_widget_layout);
     //init resources
 
-    mainDial = context.getResources().getDrawable(R.drawable.dial_294);
+    mainDial = context.getResources().getDrawable(R.drawable.dial_220);
     mHourHand = context.getResources().getDrawable(R.drawable.hour_hand_294);
     mMinuteHand = context.getResources().getDrawable(R.drawable.minute_hand_294);
 
@@ -188,24 +189,32 @@ public class ClockWidget extends AppWidgetProvider {
 
   public static void onTimeChanged() {
     Log.d(LOG_TAG, "oTimeChanged");
-    Log.d(LOG_TAG, "Time is " + hourCounter + " : " + minuteCounter + " : " + secondCounter + ". ");
+    Log.d(LOG_TAG,
+        "Time is(clock):\t" + hourCounter + "\t:\t" + minuteCounter + "\t:\t" + secondCounter
+            + ". Time left:"
+            + timeLeft);
+
     //Time logic
     secondCounter++;
-    if (secondCounter == 100) {
+    timeLeft++;
+
+    if (secondCounter >= 100.0f) {
       secondCounter = 0;
       minuteCounter++;
     }
-    if (minuteCounter == 108) {
-      minuteCounter = 0;
+    if (minuteCounter >= 108.0f) {
+      minuteCounter = 0.0f;
       hourCounter++;
     }
-    if (hourCounter == 4) {
-      hourCounter = 0;
+    if (hourCounter >= 4.0f) {
+      hourCounter = 0.0f;
     }
     mSeconds = secondCounter;
     mMinutes = minuteCounter + mSeconds / 100.0f;
     mHours = hourCounter + mMinutes / 108.0f;
     mChanged = true;
+
+    Log.d(LOG_TAG, "Time is(hands):\t " + mHours + "\t:\t" + mMinutes + "\t:\t" + mSeconds);
     bitmap.eraseColor(Color.TRANSPARENT);
     onDraw();
     views.setImageViewBitmap(R.id.ivClockScreen, bitmap);

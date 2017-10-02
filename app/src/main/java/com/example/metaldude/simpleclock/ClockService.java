@@ -27,7 +27,7 @@ public class ClockService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(ClockWidget.LOG_TAG, "onStartCommand");
         mHandler.postDelayed(updateTimeRun, 1000);
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     @Override

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <dimen name="widget_little_size">146dp</dimen>
   <dimen name="widget_medium_size">220dp</dimen>
   <dimen name="widget_large_size">294dp</dimen>
 </resources>

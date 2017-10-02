@@ -96,7 +96,8 @@ public class ClockWidget extends AppWidgetProvider {
       Log.e(LOG_TAG, "updateAppWidget: widget id null");
       return;
     }
-    appWidgetManager.updateAppWidget(appWidgetIds[0], views);
+    //appWidgetManager.updateAppWidget(appWidgetIds[0], views);
+    appWidgetManager.updateAppWidget(appWidgetId, views);
   }
 
   public static void onDraw() {

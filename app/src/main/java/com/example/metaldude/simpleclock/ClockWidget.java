@@ -235,6 +235,7 @@ public class ClockWidget extends AppWidgetProvider {
         "Time is(clock):\t" + hourCounter + "\t:\t" + minuteCounter + "\t:\t" + secondCounter
             + ". Time left:"
             + timeLeft);
+    //error
 
     //Time logic
     secondCounter++;

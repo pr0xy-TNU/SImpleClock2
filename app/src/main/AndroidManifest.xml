@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   package="com.example.metaldude.simpleclock">
 
   <application
@@ -29,11 +30,14 @@
 
     <service
       android:enabled="true"
-      android:name=".ClockService" />
-      <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="9ef9f84690a2ac1338be650ca3b0b30f0d03268e" />
-    </application>
+      android:launchMode="singleTop"
+      android:process=".newproccess"
+      android:name=".ClockService"
+      />
+    <meta-data
+      android:name="io.fabric.ApiKey"
+      android:value="9ef9f84690a2ac1338be650ca3b0b30f0d03268e" />
+  </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

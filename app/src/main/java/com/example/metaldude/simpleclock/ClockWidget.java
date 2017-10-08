@@ -39,10 +39,6 @@ public class ClockWidget extends AppWidgetProvider {
       ClockWidget.initTime();
     }
   }*/
-
-  private static final int MINUTES = 108;
-  private static final int SECONDS = 100;
-
   private static Bitmap bitmap;
   private static int DISPLAY_WIDTH, DISPLAY_HEIGHT;
 
@@ -222,9 +218,13 @@ public class ClockWidget extends AppWidgetProvider {
     mCalendar = new Time();
     mCalendar.setToNow();
     int ourSeconds = mCalendar.second + mCalendar.minute * 60 + mCalendar.hour * 3600;
+
     hourCounter = ourSeconds / 10800;
-    minuteCounter = (ourSeconds - hourCounter * (MINUTES * SECONDS)) / 108;
-    secondCounter = (ourSeconds - hourCounter * MINUTES * SECONDS + minuteCounter * 108) / 100;
+    ourSeconds %= 10800;
+    minuteCounter = ourSeconds / 108;
+    ourSeconds %= 108;
+    secondCounter = ourSeconds + 1;
+
     Log.d(LOG_TAG, "Our seconds : " + ourSeconds);
     Log.e(LOG_TAG, "New time is: " + hourCounter + ":" + minuteCounter + ":" + secondCounter);
   }

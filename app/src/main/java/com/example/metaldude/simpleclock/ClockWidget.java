@@ -31,14 +31,6 @@ public class ClockWidget extends AppWidgetProvider {
   private static int secondCounter;
   private static int minuteCounter;
   private static int hourCounter;
-
-  /*@Override
-  public void onReceive(Context context, Intent intent) {
-    String currentAction = intent.getAction();
-    if (AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(currentAction)){
-      ClockWidget.initTime();
-    }
-  }*/
   private static Bitmap bitmap;
   private static int DISPLAY_WIDTH, DISPLAY_HEIGHT;
 
@@ -49,6 +41,7 @@ public class ClockWidget extends AppWidgetProvider {
   private static float mMinutes;
   private static float mHours;
   private static float mSeconds;
+
   public static boolean mChanged = false;
   public static String APP_WIDGET_ID = " WIDGET_ID";
   static int[] appWidgetIds = null;
@@ -64,6 +57,7 @@ public class ClockWidget extends AppWidgetProvider {
     editor.putInt(APP_WIDGET_ID, test[0]);
     editor.apply();
     editor.commit();
+    context.startService(new Intent(context, ClockService.class));
     Log.d(LOG_TAG, String.valueOf(test[0]));
   }
 
@@ -84,8 +78,6 @@ public class ClockWidget extends AppWidgetProvider {
   public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
     super.onUpdate(context, appWidgetManager, appWidgetIds);
     Log.d(LOG_TAG, "onUpdate");
-
-    context.startService(new Intent(context, ClockService.class));
     ClockWidget.appWidgetIds = appWidgetIds;
     updateAppWidget(context, appWidgetManager, appWidgetIds);
   }
@@ -93,21 +85,16 @@ public class ClockWidget extends AppWidgetProvider {
   public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
       int[] ids) {
     Log.d(LOG_TAG, "updateAppWidget");
-
     views = new RemoteViews(context.getPackageName(), R.layout.clock_widget_layout);
     //init resources
-
     mainDial = context.getResources().getDrawable(R.drawable.dial_294);
     mHourHand = context.getResources().getDrawable(R.drawable.hour_hand_yellow);
     mMinuteHand = context.getResources().getDrawable(R.drawable.minute_hand_yellow);
-
     mSecondHand = context.getResources().getDrawable(R.drawable.second_red);
     DISPLAY_HEIGHT = mainDial.getIntrinsicHeight();
     DISPLAY_WIDTH = mainDial.getIntrinsicWidth();
-
     bitmap = Bitmap.createBitmap(DISPLAY_WIDTH, DISPLAY_HEIGHT, Config.ARGB_8888);
     dial_Canvas = new Canvas(bitmap);
-
     onTimeChanged();
     if (appWidgetIds == null) {
       Log.e(LOG_TAG, "updateAppWidget: widget id null");
@@ -120,21 +107,16 @@ public class ClockWidget extends AppWidgetProvider {
 
   public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int ids) {
     Log.d(LOG_TAG, "updateAppWidget");
-
     views = new RemoteViews(context.getPackageName(), R.layout.clock_widget_layout);
     //init resources
-
     mainDial = context.getResources().getDrawable(R.drawable.dial_294);
     mHourHand = context.getResources().getDrawable(R.drawable.hour_hand_yellow);
     mMinuteHand = context.getResources().getDrawable(R.drawable.minute_hand_yellow);
-
     mSecondHand = context.getResources().getDrawable(R.drawable.second_red);
     DISPLAY_HEIGHT = mainDial.getIntrinsicHeight();
     DISPLAY_WIDTH = mainDial.getIntrinsicWidth();
-
     bitmap = Bitmap.createBitmap(DISPLAY_WIDTH, DISPLAY_HEIGHT, Config.ARGB_8888);
     dial_Canvas = new Canvas(bitmap);
-
     onTimeChanged();
     appWidgetManager.updateAppWidget(ids, views);
   }
@@ -145,19 +127,14 @@ public class ClockWidget extends AppWidgetProvider {
       mChanged = false;
     }
     Log.d(LOG_TAG, "onDraw");
-
     int availableHeight = DISPLAY_HEIGHT;
     int availableWidth = DISPLAY_WIDTH;
-
     int x = availableHeight / 2;
     int y = availableWidth / 2;
-
     final Drawable dial = mainDial;
     int w = mainDial.getIntrinsicWidth();
     int h = mainDial.getIntrinsicHeight();
-
     boolean scaled = false;
-
     if (availableWidth < w || availableHeight < h) {
       scaled = true;
       float scale = Math.min((float) availableWidth / (float) w,
@@ -165,15 +142,13 @@ public class ClockWidget extends AppWidgetProvider {
       dial_Canvas.save();
       dial_Canvas.scale(scale, scale, x, y);
     }
-
     if (changed) {
       mainDial.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y
           + (h / 2));
     }
     dial.draw(dial_Canvas);
     dial_Canvas.save();
-
-    dial_Canvas.rotate(mHours / 4.0f * 360, x, y);
+    dial_Canvas.rotate(mHours / 4.0f * 360.0f, x, y);
     final Drawable hourHand = mHourHand;
     if (changed) {
       w = hourHand.getIntrinsicWidth();
@@ -184,9 +159,7 @@ public class ClockWidget extends AppWidgetProvider {
     hourHand.draw(dial_Canvas);
     dial_Canvas.restore();
     dial_Canvas.save();
-
-    dial_Canvas.rotate(mSeconds / 100 * 360, x, y);
-
+    dial_Canvas.rotate(mSeconds / 100.0f * 360.0f, x, y);
     final Drawable secondHand = mSecondHand;
     if (changed) {
       w = secondHand.getIntrinsicWidth();
@@ -196,7 +169,6 @@ public class ClockWidget extends AppWidgetProvider {
     secondHand.draw(dial_Canvas);
     dial_Canvas.restore();
     dial_Canvas.save();
-
     dial_Canvas.rotate(mMinutes / 108.0f * 360.0f, x, y);
     final Drawable minuteHand = mMinuteHand;
     if (changed) {
@@ -206,25 +178,21 @@ public class ClockWidget extends AppWidgetProvider {
     }
     minuteHand.draw(dial_Canvas);
     dial_Canvas.restore();
-
     if (scaled) {
       dial_Canvas.restore();
     }
     isWidgetCreated = true;
-    //Log.d(LOG_TAG, "Clock was rendered...");
   }
 
   public static void initTime() {
     mCalendar = new Time();
     mCalendar.setToNow();
     int ourSeconds = mCalendar.second + mCalendar.minute * 60 + mCalendar.hour * 3600;
-
     hourCounter = ourSeconds / 10800;
     ourSeconds %= 10800;
-    minuteCounter = ourSeconds / 108;
-    ourSeconds %= 108;
+    minuteCounter = ourSeconds / 100;
+    ourSeconds %= 100;
     secondCounter = ourSeconds + 1;
-
     Log.d(LOG_TAG, "Our seconds : " + ourSeconds);
     Log.e(LOG_TAG, "New time is: " + hourCounter + ":" + minuteCounter + ":" + secondCounter);
   }
@@ -236,18 +204,17 @@ public class ClockWidget extends AppWidgetProvider {
             + ". Time left:"
             + timeLeft);
     //error
-
     //Time logic
     secondCounter++;
     timeLeft++;
-
-    if (secondCounter >= 100) {
+    if (secondCounter >= 99) {
       minuteCounter++;
       secondCounter = 1;
     }
     if (minuteCounter >= 108) {
       hourCounter++;
       minuteCounter = 1;
+      initTime();
     }
     if (hourCounter >= 4) {
       hourCounter -= 4;
@@ -256,7 +223,6 @@ public class ClockWidget extends AppWidgetProvider {
     mMinutes = minuteCounter + mSeconds / 100.0f;
     mHours = hourCounter + mMinutes / 108.0f;
     mChanged = true;
-
     Log.d(LOG_TAG, "Time is(hands):\t " + mHours + "\t:\t" + mMinutes + "\t:\t" + mSeconds);
     bitmap.eraseColor(Color.TRANSPARENT);
     onDraw();

@@ -3,6 +3,5 @@
   android:minHeight="@dimen/widget_medium_size"
   android:minWidth="@dimen/widget_medium_size"
   android:previewImage="@drawable/preload_icon"
-  android:resizeMode="horizontal|vertical"
-  android:updatePeriodMillis="0">
+  android:resizeMode="horizontal|vertical">
 </appwidget-provider>

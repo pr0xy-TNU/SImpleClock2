@@ -12,6 +12,5 @@ public class Main extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     Fabric.with(this, new Crashlytics());
     setContentView(R.layout.main);
-    System.currentTimeMillis();
   }
 }

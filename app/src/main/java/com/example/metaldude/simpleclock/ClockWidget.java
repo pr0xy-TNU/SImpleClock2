@@ -16,9 +16,7 @@ import android.text.format.Time;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-/**
- * Created by metalDude on 28.09.2017.
- */
+
 
 public class ClockWidget extends AppWidgetProvider {
 
@@ -192,7 +190,7 @@ public class ClockWidget extends AppWidgetProvider {
     ourSeconds %= 10800;
     minuteCounter = ourSeconds / 100;
     ourSeconds %= 100;
-    secondCounter = ourSeconds + 1;
+    secondCounter = ourSeconds;
     Log.d(LOG_TAG, "Our seconds : " + ourSeconds);
     Log.e(LOG_TAG, "New time is: " + hourCounter + ":" + minuteCounter + ":" + secondCounter);
   }
@@ -203,22 +201,24 @@ public class ClockWidget extends AppWidgetProvider {
         "Time is(clock):\t" + hourCounter + "\t:\t" + minuteCounter + "\t:\t" + secondCounter
             + ". Time left:"
             + timeLeft);
-    //error
-    //Time logic
+
     secondCounter++;
     timeLeft++;
-    if (secondCounter >= 99) {
+    if (secondCounter >= 99){
+      initTime();
+    }
+    /*if (secondCounter >= 99) {
       minuteCounter++;
       secondCounter = 1;
+
     }
     if (minuteCounter >= 108) {
       hourCounter++;
       minuteCounter = 1;
-      initTime();
     }
     if (hourCounter >= 4) {
       hourCounter -= 4;
-    }
+    }*/
     mSeconds = secondCounter;
     mMinutes = minuteCounter + mSeconds / 100.0f;
     mHours = hourCounter + mMinutes / 108.0f;
